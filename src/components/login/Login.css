@@ -1,0 +1,47 @@
+
+.normal {
+}
+:global(.login-form) {
+	margin: 0px auto;
+  	max-width: 400px;
+  	border:1px solid #aaa;
+  	box-shadow: 1px 1px 1px 1px #aaa;
+  	padding:40px;
+  	position: relative;
+  	top:100px;
+  	border-radius:10px;
+}
+:global( .login-form-forgot) {
+  float: right;
+}
+:global( .login-form-button) {
+  width: 100%;
+}
+
+:global(.register) {
+  float: right;
+}
+
+:global(.icon) {
+   font-size: 20px;
+   color: rgba(0, 0, 0, 0.2);
+   margin-left: 10px;
+   vertical-align: middle;
+   cursor: pointer;
+   transition: color 0.3s;
+ }
+
+:global(.other) {
+  text-align: left;
+  margin-top: 24px;
+  line-height: 22px;
+}
+
+:global(.logintext) {
+  color: rgba(55, 55, 55, 0.83);
+  text-align: center;
+  font-size:18px;
+  margin-bottom: 24px;
+}
+
+
