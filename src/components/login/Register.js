@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import {routerRedux} from "dva/router";
 import styles from './Register.css';
-import { Form, Input, Tooltip, Icon, DatePicker, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete, message } from 'antd';
+import { Form, Input, Tooltip, Icon, Modal, DatePicker, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete, message } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const AutoCompleteOption = AutoComplete.Option;
@@ -18,19 +18,21 @@ class RegistrationForm extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        fetch("/api/regist",{
+        fetch("/api/register",{
         	method : "POST",
         	headers : {
         		"Content-Type": "application/json"
         	},
         	body:JSON.stringify(values)
-        }).then((data)=>data.json()).then((data)=>{if(data.result == 1){
-        	message.success("注册成功");
-
+        }).then((data)=>data.json()).then((data)=>{if(data.status == 0){
+        	Modal.success({
+            content: "注册成功,你的账号为"+data.data.accountId ,
+          });
+       //   this.props.dispatch(routerRedux.push("/login"))
         	// window.location="/#/"
-          this.props.dispatch(routerRedux.push("/login"))
+
         }else{
-        	message.error("注册失败");
+        	message.error("注册失败,服务器错误！");
 
         }});
       }
@@ -197,7 +199,7 @@ class RegistrationForm extends React.Component {
           {...formItemLayout}
           label="电话号码"
         >
-          {getFieldDecorator('telephone', {
+          {getFieldDecorator('phone', {
             rules: [{ required: true, message: '请输入你的电话号码!' }],
           })(
             <Input addonBefore={prefixSelector} style={{ width: '100%' }} />

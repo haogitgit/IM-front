@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { routerRedux, Link } from 'dva/router';
 import styles from './Login.css';
 import { Form, Icon, Input, Button, Checkbox, message, Tooltip } from 'antd';
+import {Modal} from "antd/lib/index";
 const FormItem = Form.Item;
 
 class NormalLoginForm extends React.Component {
@@ -18,14 +19,14 @@ class NormalLoginForm extends React.Component {
         	},
         	body:JSON.stringify(values)
         }).then(data=>data.json()).then(data=>{
-        	if(data.result == 1){
+        	if(data.status == 0){
             message.success("登陆成功！");
             // window.location = "/#/";
             this.props.dispatch(routerRedux.push("/"));
-          }else if(data.result == -1){
-            message.error("密码或者账号错误！");
-          }else if(data.result == 0){
-            message.error("登陆失败！");
+          }else {
+            Modal.error({
+              content: "账号或密码错误！",
+            });
           }
 
         })
@@ -39,7 +40,7 @@ class NormalLoginForm extends React.Component {
       <Form onSubmit={this.handleSubmit} className="login-form">
         <div className="logintext">账号密码登陆</div>
         <FormItem>
-          {getFieldDecorator('id', {
+          {getFieldDecorator('accountId', {
             rules: [{ required: true, message: '请输入你的账号!' }],
           })(
             <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="账号" />
