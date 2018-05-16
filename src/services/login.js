@@ -1,9 +1,12 @@
 import request from '../utils/request';
 
-export function login(str) {
-  return request('/api/login', str);
+export function login(values) {
+  return request('/api/login', {
+    method: 'POST',
+    headers: {
+      "Content-Type":"application/json",
+    },
+    body: JSON.stringify(values),
+  });
 }
 
-export function register(str) {
-  return request('/api/register', str);
-}

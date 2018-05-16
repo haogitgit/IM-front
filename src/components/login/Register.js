@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { connect } from 'dva';
 import {routerRedux} from "dva/router";

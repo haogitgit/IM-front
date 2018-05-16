@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { connect } from 'dva';
 import { routerRedux, Link } from 'dva/router';
@@ -6,44 +7,29 @@ import { Form, Icon, Input, Button, Checkbox, message, Tooltip } from 'antd';
 import {Modal} from "antd/lib/index";
 const FormItem = Form.Item;
 
-class NormalLoginForm extends React.Component {
-  handleSubmit = (e) => {
+function NormalLoginForm ({loading,dispatch,form: { getFieldDecorator, validateFields,},
+}) {
+  function handleOk (e) {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        fetch("/api/login",{
-        	method:"POST",
-        	headers: {
-        		"Content-Type":"application/json"
-        	},
-        	body:JSON.stringify(values)
-        }).then(data=>data.json()).then(data=>{
-        	if(data.status == 0){
-            message.success("登陆成功！");
-            // window.location = "/#/";
-            this.props.dispatch(routerRedux.push("/"));
-          }else {
-            Modal.error({
-              content: "账号或密码错误！",
-            });
-          }
-
-        })
+        dispatch({
+          type: 'login/login',
+          payload: values,
+        });
       }
     });
   }
-  render() {
-    const { getFieldDecorator } = this.props.form;
     return (
 
-      <Form onSubmit={this.handleSubmit} className="login-form">
+      <Form className="login-form">
         <div className="logintext">账号密码登陆</div>
         <FormItem>
           {getFieldDecorator('accountId', {
             rules: [{ required: true, message: '请输入你的账号!' }],
           })(
-            <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="账号" />
+            <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="账号"/>
           )}
         </FormItem>
         <FormItem>
@@ -64,7 +50,7 @@ class NormalLoginForm extends React.Component {
             忘记密码
           </Link>
 
-          <Button type="primary" htmlType="submit" className="login-form-button">
+          <Button type="primary" className="login-form-button" onClick={handleOk}>
             登陆
           </Button>
           <div className="other">
@@ -80,7 +66,6 @@ class NormalLoginForm extends React.Component {
         </FormItem>
       </Form>
     );
-  }
 }
 
 const Login = Form.create()(NormalLoginForm);
