@@ -7,6 +7,13 @@ export function login(values) {
       "Content-Type":"application/json",
     },
     body: JSON.stringify(values),
+    credentials: 'include',
   });
 }
 
+export function logout(id) {
+  return request(`/api/logout/${id}`, {
+    method: 'POST',
+    credentials: 'include',
+  });
+}
