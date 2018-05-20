@@ -8,7 +8,7 @@ function Sidebar({user, logout}) {
 
   return (
     <div className="sidebar">
-      <img src="//cdn.suisuijiang.com/fiora/./avatar/1.jpg" className="head" />
+      <img src="//cdn.suisuijiang.com/fiora/avatar/3.jpg" className="head" />
       <Button onClick={logout} className="logout" ghost={true}>
         <Icon type="poweroff"  style={{ fontSize: 30, color: '#08c' }} />
       </Button>

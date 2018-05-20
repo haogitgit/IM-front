@@ -4,28 +4,40 @@ export default {
 
   namespace: 'main',
 
-  state: {},
+  state: {
+
+  },
 
   subscriptions: {
     setup({ dispatch, history }) {
-      // eslint-disable-line
       history.listen((location) => {
         if (location.pathname === '/main') {
-          var isLogin = select(state => state.login.isLogin);
-          console.log(isLogin);
-          if (!isLogin){
-             put(routerRedux.push("/"));
-          }
-        }
+          console.log("main sub");
+          dispatch({
+            type: 'main/isLogin',
+          });
         }
       });
-  }
+      }
+    },
 
   effects: {
+    *isLogin({}, { put, select }){
+      const { isLogin } = yield select(state => state.login);
+      console.log("main model" + isLogin);
+      if (isLogin === undefined || isLogin === false) {
+        console.log("not login");
+        yield put(routerRedux.push("/"));
+      }else{
+        //获取好友列表
 
-  }
+      }
+    }
+
+  },
 
   reducers: {
 
-  }
+  },
+
 };

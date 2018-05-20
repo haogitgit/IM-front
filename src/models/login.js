@@ -19,9 +19,7 @@ export default {
       // eslint-disable-line
       history.listen((location) => {
         if (location.pathname === '/login') {
-          socket.on('connect', function () {
-            console.log('ddd');
-          });
+          console.log("login sub");
         }
       });
     }
@@ -29,6 +27,7 @@ export default {
   },
 
   effects: {
+
     *login({ payload: values }, { call, put, select }) {
       console.log("loginmodel:" + values);
       const data = yield call(loginService.login, values);

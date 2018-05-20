@@ -1,5 +1,5 @@
 :global(.sidebar){
-  width: 15%;
+  width: 13%;
   height: 100%;
   background-color: #b3a6ff;
   display: -ms-flexbox;
@@ -14,16 +14,16 @@
 }
 
 :global(.head){
-  margin-top: 20px;
-  margin-left: 20px;
+  margin-top: 40px;
+  margin-left: 25%;
   width: 60px;
   height: 60px;
   border-radius: 30px;
   position: relative;
 }
 :global(.logout){
-  top: 75%;
-  margin-left: 20px;
+  top: 70%;
+  margin-left: 25%;
   position: relative;
   border:0;
 }
