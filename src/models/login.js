@@ -1,9 +1,7 @@
 import * as loginService from '../services/login';
 import { message, Modal } from "antd";
 import { routerRedux } from "dva/router";
-import io from "socket.io-client";
-
-var socket;
+import * as socketService from '../services/socket';
 
 export default {
 
@@ -36,7 +34,7 @@ export default {
       // const { user } = yield select(state => state.login);
       if (data.status === 0) {
         message.success("登陆成功！");
-        socket = io.connect("http://127.0.0.1:8081?clientid="+data.data.accountId);
+        socketService.connect(data.data.accountId);
         // window.location = "/#/";
         yield put({ type: 'save', payload: {user: data.data, isLogin: true } });
         yield put(routerRedux.push("/main"));
@@ -55,9 +53,11 @@ export default {
       console.log(data.status);
       if (data.status === 0) {
         message.success("登出成功！");
-        socket.disconnect();
+        socketService.disconnect();
         // window.location = "/#/";
-        yield put({ type: 'save', payload: {user: null, isLogin: false } });
+        yield put({ type: 'save', payload: { user: null, isLogin: false } });
+        yield put({ type: 'main/save', payload: { contactList: [] } });
+        yield put({ type: 'main/saveCurrentChat', payload: { currentChat: {}} });
         yield put(routerRedux.push("/"));
       } else {
         Modal.error({

@@ -1,0 +1,10 @@
+:global(.inputButton){
+  top: 20px;
+  border: 0px;
+ }
+:global(.messageinput){
+  margin-left: 10px;
+  margin-right: 10px;
+  top: 20px;
+  width: 80%;
+}

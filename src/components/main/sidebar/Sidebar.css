@@ -1,7 +1,7 @@
 :global(.sidebar){
   width: 13%;
   height: 100%;
-  background-color: #b3a6ff;
+  background-color: rgba(74, 144, 226, 0.8);
   display: -ms-flexbox;
   -ms-flex-direction: column;
   flex-direction: column;
