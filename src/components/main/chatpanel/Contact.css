@@ -1,3 +1,7 @@
 :global(.chatButton){
   border: 0px;
 }
+
+:global(.contact){
+  overflow:auto;
+}

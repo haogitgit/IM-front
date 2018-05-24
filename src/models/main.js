@@ -130,7 +130,7 @@ export default {
       console.log(currentMessage);
       let chat;
       if (sourceClientId === user.accountId){
-        chat = currentMessage;
+        chat = chatMessage.get(targetClientId);
       } else {
         chat = chatMessage.get(sourceClientId);
       }
@@ -145,6 +145,25 @@ export default {
       console.log("chatMessage");
       console.log(chatMessage);
     },
+    *search({ payload: values }, { call, put, select }) {
+      const contactAccountId = values.accountId;
+      const { user } = yield select(state => state.login);
+      const userAccountId = user.accountId;
+      const data = yield call(mainService.searchContact, { "contactAccountId": contactAccountId, "userAccountId": userAccountId });
+      if (data.status === 0) {
+        // window.location = "/#/";
+        Modal.success({
+          content: data.msg,
+        });
+        yield put({
+          type: 'fetch',
+        });
+      } else {
+        Modal.error({
+          content: data.msg,
+        });
+      }
+    }
   },
 
   reducers: {

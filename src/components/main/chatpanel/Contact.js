@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { routerRedux, Link } from 'dva/router';
-import styles from './Search.css';
+import styles from './Contact.css';
 import { Form, Avatar, List, Button, Icon, message, Tooltip } from 'antd';
 import {Modal} from "antd/lib/index";
 const FormItem = Form.Item;
@@ -10,6 +10,7 @@ const FormItem = Form.Item;
 function Contact({contactList, handChat }) {
 
   return (
+    <div className="contact">
     <List
       itemLayout="horizontal"
       dataSource={contactList}
@@ -25,6 +26,7 @@ function Contact({contactList, handChat }) {
         </List.Item>
       )}
     />
+    </div>
   );
 };
 

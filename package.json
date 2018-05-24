@@ -16,6 +16,7 @@
     "dva-loading": "^2.0.1",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
+    "react-infinite-scroll": "^0.1.5",
     "socket.io-client": "^2.1.0"
   },
   "devDependencies": {
