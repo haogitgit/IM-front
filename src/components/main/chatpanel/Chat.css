@@ -24,6 +24,11 @@
   float:left;
   font-size: 16px;
   border-bottom-right-radius: 10px;
+  width: 80%;
+}
+:global(.userdelete){
+  margin-top: 20px;
+  border: 0px;
 }
 :global(.messagelist){
   width: 100%;

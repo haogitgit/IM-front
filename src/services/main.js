@@ -21,3 +21,14 @@ export function searchContact(values) {
     credentials: 'include',
   });
 }
+
+export function deleteContact(values) {
+  return request('/api/user/deleteContact', {
+    method: 'POST',
+    headers: {
+      "Content-Type":"application/json",
+    },
+    body: JSON.stringify(values),
+    credentials: 'include',
+  });
+}

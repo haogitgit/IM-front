@@ -4,13 +4,12 @@ import { Form, Icon, Input, Button, Divider, message, Tooltip } from 'antd';
 import MessageInput from "./MessageInput";
 import Message from "./Message";
 
-function Chat({ currentChat, send, currentMessage, user }) {
+function Chat({ currentChat, send, currentMessage, user, deleteContact }) {
 
   function renderMessage(chatmessage, i){
     console.log("rendmessage");
     console.log(chatmessage);
     const props = {
-      key: chatmessage.date,
       date: chatmessage.date,
       content: chatmessage.msgContent,
     };
@@ -31,6 +30,9 @@ function Chat({ currentChat, send, currentMessage, user }) {
     <div className="chat">
       <div className="header" >
         <span className="textspan">{currentChat.name}</span>
+        <Button type="primary" className="userdelete" onClick={deleteContact} ghost={true} >
+          <Icon type="user-delete" style={{ fontSize: 27  }} />
+        </Button>
       </div>
       <div className="messagelist">
         {

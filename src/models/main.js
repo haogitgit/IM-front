@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { routerRedux } from "dva/router";
 import * as mainService from '../services/main';
 import {message, Modal} from "antd/lib/index";
@@ -12,6 +13,7 @@ export default {
     contactList: [],
     currentChat: {},
     chatMessage: new Map(),
+    unRead: new Map(),
     currentMessage: [],
   },
 
@@ -44,6 +46,7 @@ export default {
     *fetch({}, { call, put, select }) {
       console.log("main eff fetch");
       const { user } = yield select(state => state.login);
+      const { currentChat } = yield select(state => state.main);
       const data = yield call(mainService.fetch, { "accountId": user.accountId });
       if (data.status === 0) {
         // window.location = "/#/";
@@ -53,6 +56,15 @@ export default {
             contactList: data.data,
           },
         });
+        if (currentChat.accountId == null || currentChat.accountId === undefined) {
+          let current = data.data[0];
+          if (current != null && current !== undefined){
+            yield put({
+              type: 'changeCurrentChat',
+              payload: current,
+            });
+          };
+        }
       } else {
         Modal.error({
           content: "网络错误！",
@@ -95,12 +107,13 @@ export default {
           currentChat: item,
         },
       });
+      console.log("changeCurrentChat");
       console.log(item);
       const accountId = item.accountId;
       console.log("accountId");
       console.log(accountId);
-      let { chatMessage } = yield select(state => state.main);
-
+      const { chatMessage, unRead } = yield select(state => state.main);
+      unRead.set(accountId, 0);
       let messageList = chatMessage.get(accountId);
       if (messageList != null && undefined !== messageList){
         yield put({
@@ -125,25 +138,57 @@ export default {
       const { user } = yield select(state => state.login);
       const sourceClientId = data.sourceClientId;
       const targetClientId = data.targetClientId;
-      const {  currentMessage, chatMessage } = yield select(state => state.main);
+      const {  currentMessage, chatMessage, currentChat, unRead } = yield select(state => state.main);
       console.log("currentMessage");
       console.log(currentMessage);
       let chat;
-      if (sourceClientId === user.accountId){
+      if (sourceClientId === user.accountId) {
         chat = chatMessage.get(targetClientId);
+        if (chat == null || chat === undefined) {
+          chat = [];
+        }
+        chat.push(data);
+        chatMessage.set(targetClientId, chat);
       } else {
         chat = chatMessage.get(sourceClientId);
+        if (chat == null || chat === undefined) {
+          chat = [];
+        }
+        chat.push(data);
+        chatMessage.set(sourceClientId, chat);
       }
-      chat.push(data);
-      chat = chat.slice(0)
-      yield put({
-        type: 'saveCurrentMessage',
-        payload: {
-          currentMessage: chat,
-        },
-      });
-      console.log("chatMessage");
-      console.log(chatMessage);
+      if (currentChat.accountId == sourceClientId || sourceClientId === user.accountId){
+        chat = chat.slice(0)
+        yield put({
+          type: 'saveCurrentMessage',
+          payload: {
+            currentMessage: chat,
+          },
+        });
+      }
+      if (targetClientId === user.accountId) {
+        if (sourceClientId !== currentChat.accountId) {
+          let num = unRead.get(sourceClientId);
+          if (num != null && num !== undefined) {
+            num += 1;
+          } else {
+            num = 1;
+          }
+          unRead.set(sourceClientId, num);
+          let numMap = new Map();
+          for (let x of unRead) {
+            numMap.set(x[0], x[1]);
+          }
+          yield put({
+            type: 'saveUnRead',
+            payload: {
+              unRead: numMap,
+            },
+          });
+        }
+      }
+      console.log("unRead");
+      console.log(unRead);
     },
     *search({ payload: values }, { call, put, select }) {
       const contactAccountId = values.accountId;
@@ -163,7 +208,40 @@ export default {
           content: data.msg,
         });
       }
-    }
+    },
+    *deleteContact({}, { call, put, select }) {
+      const {  currentChat, chatMessage } = yield select(state => state.main);
+      const contactAccountId = currentChat.accountId;
+      chatMessage.set(contactAccountId, []);
+      const { user } = yield select(state => state.login);
+      const userAccountId = user.accountId;
+      const data = yield call(mainService.deleteContact, { "contactAccountId": contactAccountId, "userAccountId": userAccountId });
+      if (data.status === 0) {
+        // window.location = "/#/";
+        Modal.success({
+          content: data.msg,
+        });
+        yield put({
+          type: 'saveCurrentChat',
+          payload: {
+            currentChat: {},
+          },
+        });
+        yield put({
+          type: 'saveCurrentMessage',
+          payload: {
+            currentMessage: [],
+          },
+        });
+        yield put({
+          type: 'fetch',
+        });
+      } else {
+        Modal.error({
+          content: data.msg,
+        });
+      }
+    },
   },
 
   reducers: {
@@ -179,7 +257,9 @@ export default {
     saveChatMessage(state, { payload: { chatMessage } }) {
       return { ...state, chatMessage };
     },
+    saveUnRead(state, { payload: { unRead } }) {
+      return { ...state, unRead };
+    },
   },
 
 };
-

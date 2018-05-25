@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as loginService from '../services/login';
 import { message, Modal } from "antd";
 import { routerRedux } from "dva/router";

@@ -8,3 +8,12 @@
   position: relative;
   float:left;
 }
+:global(.searchdiv){
+  height: 13%;
+  width: 100%;
+}
+:global(.contactdiv){
+  height: 87%;
+  flex: 1;
+  overflow: auto;
+}

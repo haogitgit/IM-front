@@ -22,6 +22,7 @@ function Search({loading,dispatch,form: { getFieldDecorator, validateFields,},
       });
     }
     return (
+      <div>
       <Form>
         <FormItem>
           {getFieldDecorator('accountId', {
@@ -34,6 +35,7 @@ function Search({loading,dispatch,form: { getFieldDecorator, validateFields,},
           </Button>
         </FormItem>
       </Form>
+      </div>
     );
 };
 
