@@ -7,17 +7,31 @@ import { connect } from 'dva';
 
 function Main({dispatch, user, isLogin, contactList, currentChat, chatMessage, currentMessage, unRead }) {
 
-  const sidebarProps = {user, isLogin, logout };
+  const sidebarProps = {user, isLogin, logout, infoHandler };
 
   const featureProps = { contactList, handChat, currentChat, chatMessage, unRead };
 
-  const chatProps = { currentChat, chatMessage, send, currentMessage, user, deleteContact };
+  const chatProps = { currentChat, chatMessage, send, currentMessage, user, deleteContact, remarkHandler };
 
   console.log("maincurrentMessage" + currentMessage);
   console.log(currentMessage);
   function logout() {
     dispatch({
       type: 'login/logout',
+    });
+  }
+
+  function remarkHandler(values) {
+    dispatch({
+      type: 'main/remarkHandler',
+      payload: values,
+    });
+  }
+
+  function infoHandler(values) {
+    dispatch({
+      type: 'main/infoHandler',
+      payload: values,
     });
   }
 

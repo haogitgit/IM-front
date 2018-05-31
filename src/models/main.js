@@ -4,6 +4,7 @@ import * as mainService from '../services/main';
 import {message, Modal} from "antd/lib/index";
 import * as socketService from '../services/socket';
 import * as util from '../utils/util';
+import * as loginService from "../services/login";
 
 export default {
 
@@ -76,8 +77,8 @@ export default {
       const { isLogin } = yield select(state => state.login);
       console.log("main model" + isLogin);
       if (isLogin === undefined || isLogin === false) {
-        // console.log("not login");
-        // yield put(routerRedux.push("/"));
+        console.log("not login");
+        yield put(routerRedux.push("/"));
       }else{
         //获取好友列表
         yield put({
@@ -235,6 +236,45 @@ export default {
         });
         yield put({
           type: 'fetch',
+        });
+      } else {
+        Modal.error({
+          content: data.msg,
+        });
+      }
+    },
+    *remarkHandler({ payload: values }, { call, put, select }) {
+      const {  currentChat } = yield select(state => state.main);
+      values.contactAccountId = currentChat.accountId;
+      const { user } = yield select(state => state.login);
+      values.userAccountId = user.accountId;
+      const data = yield call(mainService.updateRemark, values);
+      console.log(data);
+      console.log(data.status);
+      // const { user } = yield select(state => state.login);
+      if (data.status === 0) {
+        message.success("添加备注成功！");
+        yield put({
+          type: 'fetch',
+        });
+      } else {
+        Modal.error({
+          content: data.msg,
+        });
+      }
+    },
+    *infoHandler({ payload: values }, { call, put, select }) {
+      const data = yield call(mainService.updateInfo, values);
+      console.log(data);
+      console.log(data.status);
+      if (data.status === 0) {
+        message.success("修改资料成功！");
+        yield put({
+          type: 'login/save',
+          payload: {
+            user: data.data,
+            isLogin: true,
+          },
         });
       } else {
         Modal.error({

@@ -41,7 +41,7 @@ export default {
         yield put(routerRedux.push("/main"));
       } else {
         Modal.error({
-          content: "账号或密码错误！",
+          content: data.msg,
         });
         yield put({ type: 'save', payload: {isLogin: false } });
       }

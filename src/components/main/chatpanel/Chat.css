@@ -65,3 +65,6 @@
   background-color: #c0d1ff;  /*滚动条的背景颜色*/
 }
 
+:global(.beizhubutton){
+  margin-left: 5px;
+}

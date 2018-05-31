@@ -32,3 +32,25 @@ export function deleteContact(values) {
     credentials: 'include',
   });
 }
+
+export function updateRemark(values) {
+  return request('/api/user/updateRemark', {
+    method: 'POST',
+    headers: {
+      "Content-Type":"application/json",
+    },
+    body: JSON.stringify(values),
+    credentials: 'include',
+  });
+}
+
+export function updateInfo(values) {
+  return request('/api/user/updateInfo', {
+    method: 'POST',
+    headers: {
+      "Content-Type":"application/json",
+    },
+    body: JSON.stringify(values),
+    credentials: 'include',
+  });
+}
