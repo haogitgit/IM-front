@@ -53,8 +53,11 @@ class RegistrationForm extends React.Component {
   }
   checkConfirm = (rule, value, callback) => {
     const form = this.props.form;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
+    if (value.length < 6) {
+      callback('密码长度至少为六位!');
+      if(this.state.confirmDirty){
+        form.validateFields(['confirm'], { force: true });
+      }
     }
     callback();
   }

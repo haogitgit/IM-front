@@ -3,13 +3,14 @@ import React from 'react';
 import styles from './Contact.css';
 import LinkMan from "./LinkMan";
 
-function Contact({ contactList, handChat, currentChat, chatMessage, unRead }){
+function Contact({ contactList, handChat, currentChat, chatMessage, unRead, onlineState }){
 
   //time, , preview, unread,
   function renderLinkman(linkman, i) {
     const props = {
       name: linkman.name,
       handChat: () => handChat({ item: linkman }),
+      isOnline: onlineState.get(linkman.accountId),
     };
     const num = unRead.get(linkman.accountId);
     if (num != null && num !== undefined){

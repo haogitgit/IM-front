@@ -3,8 +3,8 @@ import styles from './Feature.css';
 import Search from './Search';
 import Contact from './Contact';
 
-function Feature({ contactList, handChat, currentChat, chatMessage, unRead }) {
-  const props = { contactList, handChat, currentChat, chatMessage, unRead };
+function Feature({ contactList, handChat, currentChat, chatMessage, unRead, onlineState }) {
+  const props = { contactList, handChat, currentChat, chatMessage, unRead, onlineState };
   return (
     <div className="feature">
       <div className="searchdiv">

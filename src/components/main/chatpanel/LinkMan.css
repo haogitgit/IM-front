@@ -73,3 +73,21 @@
   float: left;
   display:inline;
 }
+:global(.online-on) {
+  background-color: #1de20d;
+  margin-top:23px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  float: left;
+  display:inline;
+}
+:global(.online-off) {
+  background-color: #79807d;
+  margin-top:23px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  float: left;
+  display:inline;
+}

@@ -16,6 +16,7 @@ export default {
     chatMessage: new Map(),
     unRead: new Map(),
     currentMessage: [],
+    onlineState: new Map(),
   },
 
   subscriptions: {
@@ -36,8 +37,24 @@ export default {
           const connect = function (data) {
             console.log("connect success");
           };
+          const onlineState = function (data) {
+            console.log("onlineState" + data);
+            console.log(data);
+            let map = new Map();
+            for (let k of Object.keys(data)) {
+              map.set(k, data[k]);
+            }
+            console.log(map);
+            dispatch({
+              type: 'saveOnlineState',
+              payload: {
+                onlineState: map,
+              },
+            });
+          }
           socketService.on("connect", connect);
           socketService.on("messageevent", receive);
+          socketService.on("onlineState", onlineState);
         }
       });
       }
@@ -299,6 +316,9 @@ export default {
     },
     saveUnRead(state, { payload: { unRead } }) {
       return { ...state, unRead };
+    },
+    saveOnlineState(state, { payload: { onlineState } }) {
+      return { ...state, onlineState };
     },
   },
 

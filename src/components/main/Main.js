@@ -5,11 +5,11 @@ import Sidebar from './sidebar/Sidebar';
 import './Main.css';
 import { connect } from 'dva';
 
-function Main({dispatch, user, isLogin, contactList, currentChat, chatMessage, currentMessage, unRead }) {
+function Main({dispatch, user, isLogin, contactList, currentChat, chatMessage, currentMessage, unRead, onlineState }) {
 
   const sidebarProps = {user, isLogin, logout, infoHandler };
 
-  const featureProps = { contactList, handChat, currentChat, chatMessage, unRead };
+  const featureProps = { contactList, handChat, currentChat, chatMessage, unRead, onlineState };
 
   const chatProps = { currentChat, chatMessage, send, currentMessage, user, deleteContact, remarkHandler };
 
@@ -78,7 +78,7 @@ function Main({dispatch, user, isLogin, contactList, currentChat, chatMessage, c
 
 function mapStateToProps(state) {
   const { user, isLogin } = state.login;
-  const { contactList, currentChat, chatMessage, currentMessage, unRead } = state.main;
+  const { contactList, currentChat, chatMessage, currentMessage, unRead, onlineState } = state.main;
   return {
     user,
     isLogin,
@@ -87,6 +87,7 @@ function mapStateToProps(state) {
     chatMessage,
     currentMessage,
     unRead,
+    onlineState,
   };
 }
 
